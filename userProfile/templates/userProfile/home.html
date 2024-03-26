@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Profile Page
+{% endblock %}
+{% block style %}
+<style>
+    /* Add any custom CSS styles here */
+    .btn-transparent:hover {
+        background-color: #007bff;
+    }
+
+    .btn-transparent:focus {
+        background-color: #0056b3;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
+    }
+
+    .btn-transparent {
+        border-radius: 20px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="progress">
+        {% for _ in '12345' %}
+        <div class="progress-bar bg-dark" style="width:20%"></div>
+        {% endfor %}
+        <div class="progress-bar bg-danger" style="width:20%"></div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- First Container -->
+        <div class="col-md-12">
+            <div class="card" >
+                <div class="card-header bg-dark text-white" id="location-map-header" style="text-align:center;">DisasterID Card</div>
+                <div class="card-body p-0">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <svg width="65px" height="65px" viewBox="0 0 24 24" fill="#000000" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <circle cx="12" cy="6" r="4" fill="#ff0000"/>
+                                        <path d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" fill="#ff0000"/>
+                                    </g>
+                                </svg>
+                            </td>
+                            <td>
+                                <h6>Disaster ID: {{user_profile.disaster_id}}</h6>
+                                <h6>Livelihood:{{basicdetails.livelihood}}</h6>
+                            </td>
+                            <td>
+                                <h6>HOF Name:{{basicdetails.name}}</h6>
+                                <h6>Total Value of Loss:</h6>
+                            </td>
+                            <td>
+                                <h6>Age:{{basicdetails.age}}</h6>
+                                <h6>Total Value of Assistance Received:</h6>
+                            </td>
+                            <td>
+                                <h6>Gender:{{basicdetails.gender}}</h6>
+                                <h6>Gap Remained:</h6>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table" >
+                        <tr>
+                            <th class="text-center" colspan="7">Family Member Details</th>
+                        </tr>
+                        {% for member in familymembers %}
+                        <tr>
+                            <td class="text-center">Name: {{member.name}}</td>
+                            <td class="text-center">Age: {{member.age}}</td>
+                            <td class="text-center">Gender: {{member.gender}}</td>
+                            <td class="text-center">Occupation: {{member.occupation}}</td>
+                            <td class="text-center">Status: {{member.status}}</td>
+                            <td class="text-center"><a href="{%url "edit-members-details" member.id %}">Edit</a></td>
+                            <td class="text-center"><a href="#">Delete</a></td>
+                        </tr>
+                        {%endfor%}
+                        <tr>
+                            <td><a href="{%url "add-members" user_profile.id %}">Add New</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5 fixed">
+    <div class="progress">
+        <div class="progress-bar bg-dark" style="width:20%">
+          <a href="#pre-disaster" class="text-white">Basline Data</a>
+        </div>
+        <div class="progress-bar bg-dark" style="width:20%">
+            <a href="#post-disaster" class="text-white">Post-Disaster</a>
+
+        </div>
+        <div class="progress-bar bg-dark" style="width:20%">
+            <a href="#loss-estimate" class="text-white">Loss Estimate</a>
+
+        </div>
+        <div class="progress-bar bg-dark" style="width:20%">
+            <a href="#historical-damage" class="text-white">Historical Damage</a>
+        </div>
+        <div class="progress-bar bg-dark" style="width:20%">
+            <a href="#benefits-card" class="text-white">Benefits Card</a>
+        </div>
+      </div>
+    
+</div>
+<div id="pre-disaster" class="container mt-5">
+    <div class="row">
+        <div class="row justify-content-center border-1">
+            <h4 class="text-center">Basline Household Data</h4>
+        </div>
+        <!-- First Container -->
+        <div class="col-md-12">
+            <div class="card" id="map-container">
+                <div class="card-header bg-dark" id="location-map-header" style="text-align:center;">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 border-1">
+                            <div class="btn-group btn-group-horizontal" role="group" style="width: 100%;">
+                                <button type="button" class="btn btn-transparent text-white" >Shelter</button>
+                                <button type="button" class="btn btn-transparent text-white" >Agriculture</button>
+                                <button type="button" class="btn btn-transparent text-white" >Livestocks</button>
+                                <button type="button" class="btn btn-transparent text-white" >Fisheries</button>
+                                <button type="button" class="btn btn-transparent text-white" >Other Assets</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="card-body p-0">
+                    <table class="table table-hover" >
+                        {% if shelterdetails %}
+                        {% for shelter in shelterdetails %}
+                        <tr>
+                            <td class="text-center">House Type:{{shelter.house_type}}</td>
+                            <td class="text-center">Number of rooms:{{shelter.room_numbers}}</td>
+                            <td class="text-center">Source of drinking water:{{shelter.availability_of_toilets}}</td>
+                            <td class="text-center">Availability of toilets:{{shelter.drinking_water_source}}</td>
+                            <td class="text-center">Ownership Type:{{shelter.ownership_type}}</td>
+                            <td class="text-center"><a href="#">Edit</a></td>
+                            <td class="text-center"><a href="#">Delete</a></td>
+                        </tr>
+                        {%endfor%}
+                        {%else%}
+                        <tr>
+                            <td><a href="{%url "add-shelterdetails" user_profile.id %}">Add New</a></td>
+                        </tr>
+                        {%endif%}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="post-disaster" class="container mt-5">
+    <div class="row">
+        <div class="row justify-content-center border-1">
+            <h4 class="text-center">Post-Disaster Damage Data</h4>
+        </div>
+        <!-- First Container -->
+        <div class="col-md-12">
+            <div class="card" id="map-container">
+                <div class="card-header bg-dark" id="location-map-header" style="text-align:center;">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 border-1">
+                            <div class="btn-group btn-group-horizontal" role="group" style="width: 100%;">
+                                <button type="button" class="btn btn-transparent text-white" >Shelter</button>
+                                <button type="button" class="btn btn-transparent text-white" >Agriculture</button>
+                                <button type="button" class="btn btn-transparent text-white" >Livestocks</button>
+                                <button type="button" class="btn btn-transparent text-white" >Fisheries</button>
+                                <button type="button" class="btn btn-transparent text-white" >Other Assets</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="card-body p-0">
+                    <table class="table table-hover" >
+
+                        <tr>
+                            <td class="text-center">Damage to house:</td>
+                            <td class="text-center">Damage to Drinking water source:</td>
+                            <td class="text-center">Damage to the toilets:</td>
+                            <td class="text-center">Damage to kitchen:</td>
+                            <td class="text-center">Insurance Status:</td>
+                            <td class="text-center"><a href="#">Edit</a></td>
+                            <td class="text-center"><a href="#">Delete</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Add New</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="loss-estimate" class="container mt-5">
+    <div class="row">
+        {% comment %} <div class="row justify-content-center border-1">
+            <h4 class="text-center">Historical-Loss</h4>
+        </div> {% endcomment %}
+        <!-- First Container -->
+        <div class="col-md-12">
+            <div class="card" id="map-container">
+                <div class="card-header bg-dark" id="location-map-header" style="text-align:center;">
+                    <div class="row justify-content-center">
+                        <h4 class="text-center text-white">Loss-Estimate</h4>
+
+                    </div>
+                </div>
+            
+                <div class="card-body p-0">
+                    <table class="table table-hover" >
+
+                        <tr>
+                            <td class="text-center">To:</td>
+                            <td class="text-center">Age:</td>
+                            <td class="text-center">Gender:</td>
+                            <td class="text-center">Occupation:</td>
+                            <td class="text-center">Status:</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="historical-damage" class="container mt-5">
+        <div class="row">
+            {% comment %} <div class="row justify-content-center border-1">
+                <h4 class="text-center">Historical-Loss</h4>
+            </div> {% endcomment %}
+            <!-- First Container -->
+            <div class="col-md-12">
+                <div class="card" id="map-container">
+                    <div class="card-header bg-dark" id="location-map-header" style="text-align:center;">
+                        <div class="row justify-content-center">
+                            <h4 class="text-center text-white">Historical-Loss</h4>
+
+                        </div>
+                    </div>
+                
+                    <div class="card-body p-0">
+                        <table class="table table-hover" >
+    
+                            <tr>
+                                <td class="text-center">Name:</td>
+                                <td class="text-center">Age:</td>
+                                <td class="text-center">Gender:</td>
+                                <td class="text-center">Occupation:</td>
+                                <td class="text-center">Status:</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<div id="benefits-card" class="container mt-5 mb-5">
+        <div class="row">
+            {% comment %} <div class="row justify-content-center border-1">
+                <h4 class="text-center">Benefits-Card</h4>
+            </div> {% endcomment %}
+            <!-- First Container -->
+            <div class="col-md-12">
+                <div class="card" id="map-container">
+                    <div class="card-header bg-dark" id="location-map-header" style="text-align:center;">
+                        <div class="row justify-content-center">
+                            <h4 class="text-center text-white">Benefits-Card</h4>
+
+                        </div>
+                    </div>
+                
+                    <div class="card-body p-0">
+                        <table class="table table-hover" >
+    
+                            <tr>
+                                <td class="text-center">Name:</td>
+                                <td class="text-center">Age:</td>
+                                <td class="text-center">Gender:</td>
+                                <td class="text-center">Occupation:</td>
+                                <td class="text-center">Status:</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+{% endblock %}

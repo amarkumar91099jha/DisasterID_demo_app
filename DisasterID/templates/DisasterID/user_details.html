@@ -1,0 +1,45 @@
+<!-- user_details.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="progress">
+        <div class="progress-bar bg-primary" style="width:20%">
+          Get Consent
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Authentication
+        </div>
+        <div class="progress-bar bg-danger" style="width:20%">
+          Basic Details
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Address
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          DisasterID Created
+        </div>
+      </div>
+    
+</div>
+
+<div class="container mt-5">
+    <form method="post" action="{% url 'user_details' email_verification_id=email_verification.id %}">
+        {% csrf_token %}
+        <!-- Add fields to collect user details -->
+        <div class="form-group">
+            <label for="username">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+            <label for="username">Age:</label>
+            <input type="number" class="form-control" id="age" name="age" required>
+            <label for="username">Gender:</label>
+            <input type="text" class="form-control" id="gender" name="gender" required>
+            <label for="username">Livelihood:</label>
+            <input type="text" class="form-control" id="livelihood" name="livelihood" required>
+        </div>
+        <!-- Add other fields as needed -->
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+</div>
+{% endblock %}

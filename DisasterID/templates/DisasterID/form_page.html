@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{%block title%}
+Disaster Relief Form
+{%endblock%}
+{%block content%}
+<div class="container mt-4">
+    <h2 class="mb-4">Disaster Relief Form</h2>
+    <form id="disasterForm">
+     <!-- Head of family details -->
+
+        <!-- Disaster Details -->
+        <div class="form-group">
+            <label for="disasterType">Disaster Type:</label>
+            <select class="form-control" id="disasterType">
+                <option>Cyclone</option>
+                <option>Flood</option>
+                <option>Earthquake</option>
+            </select>
+        </div>
+        <!-- Tabular form for person details -->
+        <h3 class="mt-4">Family Member Details:</h3>
+        <table class="table table-bordered" id="familymembertable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age (years)</th>
+                    <th>Gender</th>
+                    <th>Livelihood</th>
+                    <th>Death</th>
+                    <th>Disability</th>
+                    <th>Add</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" name="personName[]"></td>
+                    <td><input type="number" class="form-control" name="personAge[]"></td>
+                    <td>
+                        <select class="form-control" name="personGender[]">
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Others</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-control" name="personLivelihood[]">
+                            <option>Farmer</option>
+                            <option>Daily wage labor</option>
+                            <option>Professional</option>
+                        </select>
+                    </td>
+                    <td><input type="checkbox" name="death[]"></td>
+                    <td><input type="checkbox" name="disability[]"></td>
+                    <td><button type="button" class="btn btn-primary" onclick="addRow('familymembertable')">+</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Economic Loss Types -->
+        <h3 class="mt-4">Economic Loss Types</h3>
+        <table class="table table-bordered" id="economicLossTable">
+            <thead>
+                <tr>
+                    
+                    <th>Shelter</th>
+                    <th>Agriculture</th>
+                    <th>Livestock</th>
+                    <th>Small Business</th>
+                    <th>Others</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    
+                    <td><input type="checkbox" name="shelterLoss[]"></td>
+                    <td><input type="checkbox" name="agricultureLoss[]"></td>
+                    <td><input type="checkbox" name="livestockLoss[]"></td>
+                    <td><input type="checkbox" name="businessLoss[]"></td>
+                    <td><input type="text" class="form-control" name="economicLossType[]"></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Shelter Details -->
+        <h3 class="mt-4">Shelter Details</h3>
+        <table class="table table-bordered" id="shelterLossTable">
+            <thead>
+                <tr>
+                    <th>House Types</th>
+                    <th>Number of Rooms</th>
+                    <th>Toilet Damage</th>
+                    <th>Drinking Water Source Damage</th>
+                    <th>Extent of House Damage</th>
+                    <th>Add</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="form-control" name="houseType[]">
+                            <option>Kaccha</option>
+                            <option>Pacca</option>
+                            <option>Semi-Pacca</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="form-control" name="numberOfRooms[]"></td>
+                    <td><input type="checkbox" name="toiletDamage[]"></td>
+                    <td><input type="checkbox" name="waterSourceDamage[]"></td>
+                    <td>
+                        <select class="form-control" name="houseDamageExtent[]">
+                            <option>Less than 30%</option>
+                            <option>Between 30% and 60%</option>
+                            <option>More than 60%</option>
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn btn-primary" onclick="addRow('shelterLossTable')">+</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Agricultural Details - Land -->
+        <h3 class="mt-4">Agricultural Details - Land</h3>
+
+        <table class="table table-bordered" id="landDetailsTable">
+            <thead>
+                <tr>
+                    <th>Total Cultivated Land (Acres)</th>
+                    <th>Land Owned (Acres)</th>
+                    <th>Shared Land (Acres)</th>
+                    <th>Land Area Damaged (Acres)</th>
+                    <th>Extent of Land Damage</th>
+                    <!-- <th>Add</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="number" class="form-control" name="totalCultivatedLand[]"></td>
+                    <td><input type="number" class="form-control" name="landOwned[]"></td>
+                    <td><input type="number" class="form-control" name="sharedLand[]"></td>
+                    <td><input type="number" class="form-control" name="landAreaDamaged[]"></td>
+                    <td>
+                        <select class="form-control" name="landDamageExtent[]">
+                            <option>Less than 30%</option>
+                            <option>Between 30% and 60%</option>
+                            <option>More than 60%</option>
+                        </select>
+                    </td>
+                    <!-- <td><button type="button" class="btn btn-primary" onclick="addRow('landDetailsTable')">+</button></td> -->
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="mt-4">Agricultural Details - Crops</h3>
+        <table class="table table-bordered" id="cropsDetailsTable">
+            <thead>
+                <tr>
+                    <th>Crop Name</th>
+                    <th>Age of crops (Days)</th>
+                    <th>Area under cultivation (Acres)</th>
+                    <th>Area of crop Damage (Acres)</th>
+                    <th>Extent of crop Damage</th>
+                    <th>Add</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" name="totalCultivatedLand[]"></td>
+                    <td><input type="number" class="form-control" name="landOwned[]"></td>
+                    <td><input type="number" class="form-control" name="sharedLand[]"></td>
+                    <td><input type="number" class="form-control" name="landAreaDamaged[]"></td>
+                    <td>
+                        <select class="form-control" name="landDamageExtent[]">
+                            <option>Less than 30%</option>
+                            <option>Between 30% and 60%</option>
+                            <option>More than 60%</option>
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn btn-primary" onclick="addRow('cropsDetailsTable')">+</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- JavaScript for adding rows and submitting form -->
+        <script>
+            function addRow(tableId) {
+                var table = document.getElementById(tableId);
+                var row = table.insertRow(-1);
+                var firstRow = table.rows[1]; // Assuming the first row is at index 1
+                for (var i = 0; i < firstRow.cells.length; i++) {
+                    var cell = row.insertCell(i);
+        
+                    // Clone the input field from the first row
+                    var originalInput = firstRow.cells[i].querySelector('input, select');
+                    var clonedInput = originalInput.cloneNode(true);
+        
+                    // Update the name attribute to avoid conflicts
+                    var inputName = originalInput.getAttribute('name');
+                    clonedInput.setAttribute('name', inputName.replace(/\[\d+\]/, '[' + (table.rows.length - 1) + ']'));
+        
+                    cell.appendChild(clonedInput);
+                }
+        
+                // Add delete button to the new row
+                var deleteCell = row.insertCell(firstRow.cells.length);
+                deleteCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="deleteRow(this)">-</button>';
+            }
+        
+            function deleteRow(btn) {
+                var row = btn.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+            }
+        
+            document.getElementById('disasterForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+                formData.forEach(function (value, key) {
+                    console.log(key + ': ' + value);
+                });
+                // Add your logic to handle the form data
+            });
+        </script>
+        
+        <!-- Bootstrap scripts -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Submit</button>        
+    </form>
+    </form>
+</div>
+
+{%endblock%}

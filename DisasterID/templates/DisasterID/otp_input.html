@@ -1,0 +1,37 @@
+<!-- otp_input.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="progress">
+        <div class="progress-bar bg-primary" style="width:20%">
+          Get Consent
+        </div>
+        <div class="progress-bar bg-danger" style="width:20%">
+          Authentication
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Basic Details
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Address
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          DisasterID Created
+        </div>
+      </div>
+    
+</div>
+
+<div class="container mt-5">
+    <form method="post" action="{% url 'otp_input' email_verification_id=email_verification.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="otp">Enter OTP:</label>
+            <input type="text" class="form-control" id="otp" name="otp" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+</div>
+{% endblock %}

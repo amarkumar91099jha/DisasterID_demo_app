@@ -1,0 +1,100 @@
+<!-- email_auth.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="progress">
+        <div class="progress-bar bg-primary" style="width:20%">
+          Get Consent
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Authentication
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Basic Details
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Address
+        </div>
+        <div class="progress-bar bg-danger" style="width:20%">
+          DisasterID Created
+        </div>
+      </div>
+    
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- First Container -->
+        <div class="col-md-5">
+            <div class="card" id="map-container">
+                <div class="card-header" id="location-map-header" style="text-align:center;">DisasterID Card</div>
+                <div class="card-body p-0">
+                        <table style="margin-left:35px;">
+                            <tr>
+                                <td colspan="2">
+                                    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+                                    <svg width="45px" height="45px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                                        
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                                        
+                                        <g id="SVGRepo_iconCarrier"> <circle cx="12" cy="6" r="4" fill="#cf7c07"/> <path d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" fill="#cf7c07"/> </g>
+                                        
+                                        </svg>                                
+                                    </td>
+                                <td></td>          
+                            </tr>
+                            <tr>
+                                <td>DisasterID: </td>
+                                <td><p>   Gram Panchayat:{{user_address.gramPanchayat}}</P></td>
+                            </tr>
+                            <tr>
+                                <td>{{user_profile.disaster_id}}</td>
+                                <td><p>Ward No: {{user_address.ward_no}}</P></td>
+                            </tr>
+                            <tr>
+                                <td><p>Name HOF: {{user_detail.name}}</p></td>
+                                <td><p>Tehsil/Block: {{user_address.tehsil_or_block}}</P></td>
+                            </tr>
+                            <tr>
+                                <td><p>Age: {{user_detail.age}} years</p></td>
+                                <td><p>District: {{user_address.district}}</P></td>
+                            </tr>
+                            <tr>
+                                <td><p>Gender: {{user_detail.gender}}</P></td>
+                                <td><p>State: {{user_address.state}}</P></td>
+                            </tr>
+                            <tr>
+                                <td><p>Livelihood: {{user_detail.livelihood}}</p></td>
+                                <td><p>Pin Code: {{user_address.pincode}}</P></td>
+                            </tr>
+                        </table>
+            
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Second Container -->
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <div class="container pt-5"></div>
+            <table style="margin-left:10px;" width="230px" height="75px" border="1" border-color="#000" >
+                <tr>
+                    <td style="margin-left:20px;">UserName:</td>
+                    <td style="margin-left:20px;">{{user_profile.disaster_id}}</td>
+                </tr>
+                <tr>
+                    <td style="margin-left:20px;">Password:</td>
+                    <td style="margin-left:20px;">{{password}}</td>
+                </tr>
+            </table>
+            <h6 style="color:red;">*Please change your password for security purposes</h6>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

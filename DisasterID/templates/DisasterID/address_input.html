@@ -1,0 +1,185 @@
+<!-- address_input.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{%block style%}
+
+{%endblock%}
+{% block content %}
+<div class="container mt-5">
+    <div class="progress">
+        <div class="progress-bar bg-primary" style="width:20%">
+          Get Consent
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Authentication
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          Basic Details
+        </div>
+        <div class="progress-bar bg-danger" style="width:20%">
+          Address
+        </div>
+        <div class="progress-bar bg-primary" style="width:20%">
+          DisasterID Created
+        </div>
+      </div>
+    
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- First Container -->
+        <div class="col-md-6">
+            <form method="post" action="{% url 'address_input' email_verification_id=email_verification.id %}">
+                {% csrf_token %}
+                <!-- Add fields to collect user address -->
+                <div class="form-group" style="max-width: 350px;">
+                    <label for="gram_panchayat">GramPanchayat:</label>
+                    <input type="text" class="form-control" id="gram_panchayat" name="gram_panchayat" required>
+                    <label for="ward_no">Ward No:</label>
+                    <input type="text" class="form-control" id="ward_no" name="ward_no" required>
+                    <label for="tehsil">Tehsil/Block:</label>
+                    <input type="text" class="form-control" id="tehsil" name="tehsil" required>
+                    <label for="tehsil">PinCode:</label>
+                    <input type="number" class="form-control" id="pincode" name="pincode" required>
+                    <label for="district">District:</label>
+                    <input type="text" class="form-control" id="district" name="district" required>
+                    <label for="state">State:</label>
+                    <input type="text" class="form-control" id="state" name="state" required>
+                    <label for="latitude">Latitude:</label>
+                    <input type="text" class="form-control" id="latitude" name="latitude" required>
+                    <label for="longitude">Longitude:</label>
+                    <input type="text" class="form-control" id="longitude" name="longitude" required>
+                </div>
+                <!-- Add button to get current location -->
+                <button type="button" class="btn btn-primary" onclick="getCurrentLocation()">Get Current Location</button>
+                <!-- Add button to generate address from coordinates -->
+                <button type="button" class="btn btn-success" onclick="generateAddress()">Generate Address</button>
+                <!-- Add other fields as needed -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Second Container -->
+        <div class="col-md-6">
+                <div class="card" id="map-container">
+                    <div class="card-header" id="location-map-header" style="text-align:center;">Location Map</div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 400px;"></div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Leaflet CSS and JS -->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+<!-- Include Leaflet map script -->
+<script>
+    var map = L.map('map').setView([28, 77], 13);
+    var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add search bar using Leaflet Control Geocoder
+    var searchControl = L.Control.geocoder({
+        defaultMarkGeocode: false
+    }).on('markgeocode', function (e) {
+        var latlng = e.geocode.center;
+        document.getElementById('latitude').value = latlng.lat;
+        document.getElementById('longitude').value = latlng.lng;
+
+        // Update map view
+        map.setView(latlng, 13);
+
+        // Clear existing markers
+        clearMarkers();
+
+        // Add a marker at the selected location
+        L.marker(latlng).addTo(map);
+    }).addTo(map);
+
+    // Function to get current location
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+
+                    // Update input fields with current location
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+
+                    // Update map view
+                    map.setView([lat, lng], 13);
+
+                    // Clear existing markers
+                    clearMarkers();
+
+                    // Add a marker at the current location
+                    L.marker([lat, lng]).addTo(map);
+                },
+                function (error) {
+                    console.error('Error getting current location:', error.message);
+                }
+            );
+        } else {
+            console.error('Geolocation is not supported by this browser.');
+        }
+    }
+
+    // Function to clear existing markers
+    function clearMarkers() {
+        map.eachLayer(function (layer) {
+            if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+    }
+
+    // Function to generate address from coordinates
+    function generateAddress() {
+        var lat = document.getElementById('latitude').value;
+        var lng = document.getElementById('longitude').value;
+
+        if (lat && lng) {
+            // Use the OpenStreetMap Nominatim API for reverse geocoding
+            var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.address) {
+                        // Extract relevant address components
+                        var gramPanchayat = data.address.village || data.address.town || data.address.suburb || '';
+                        var wardNo = data.address.suburb || data.address.village || data.address.town || '';
+                        var tehsil = data.address.city_district || data.address.county || data.address.state_district || '';
+                        var pincode = data.address.postcode|| '';
+                        var district = data.address.county || data.address.city || data.address.state || '';
+                        var state = data.address.state || '';
+
+                        // Update input fields with generated address
+                        document.getElementById('gram_panchayat').value = gramPanchayat;
+                        document.getElementById('ward_no').value = wardNo;
+                        document.getElementById('tehsil').value = tehsil;
+                        document.getElementById('pincode').value = pincode;
+                        document.getElementById('district').value = district;
+                        document.getElementById('state').value = state;
+                        console.log(data);
+                    }
+                })
+                .catch(error => console.error('Error fetching address:', error));
+        } else {
+            console.error('Latitude and Longitude are required.');
+        }
+    }
+</script>
+{% endblock %}
